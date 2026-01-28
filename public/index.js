@@ -16,15 +16,20 @@ async function refreshAll() {
 
                 times.forEach(t => {
                     const span = document.createElement('span');
-                    if (t === "DUE") {
-                        span.className = 'arrival-pill';
-                        span.innerText = 'DUE';
-                    } else if (t === "No service") {
-                        span.innerText = t;
+                    if (t === "DUE" || +t < 10) {
+                        span.className = 'pill arrival';
+                        if (t == "DUE") {
+                            span.innerText = 'DUE';
+                        } else {
+                            span.innerText = `${t}m`;
+                        }
+                    } else if (+t) {
+                        span.className = 'arrival';
+                        span.innerText = `${t}m`; 
                     } else {
-                        span.className = 'arrival-time';
-                        span.innerText = `${t}m`;
-                    }
+                        span.className = 'delay';
+                        span.innerText = t;
+                    } 
                     container.appendChild(span);
                 });
             }

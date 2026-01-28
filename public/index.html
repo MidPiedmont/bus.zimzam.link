@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My Website</title>
+    <title>Bus</title>
     <link rel="stylesheet" href="./global.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
@@ -13,17 +13,23 @@
         <h1>Bus Times</h1>
 	<div class="busses">
     <div class = "route">
-      <h2>Route 20</h2>
+      <div class="route-header">
+        <span class="route-number">20</span>
+        <h2 class="route-name">Madison</h2>
+      </div>
       <h3>Madison & Albany</h3>
-      <h4>East</h4>
+      <h4><strong>East</strong> to Michigan</h4>
       <div class="r20e"></div>
 
-      <h4>West</h4>
+      <h4><strong>West</strong> to Austin</h4>
       <div class="r20w"></div>
     </div>
 
     <div class = "route">
-      <h2>Route 49</h2>
+      <div class="route-header">
+        <span class="route-number">49</span>
+        <h2 class="route-name">Western</h2>
+      </div>
       <h3>Western & Madison</h3>
       <h4>North</h4>
       <div class="r49n"></div>
@@ -33,13 +39,16 @@
     </div>
 
     <div class = "route">
-      <h2>Route 52</h2>
-      <h3>Madison & Albany</h3>
-      <h4>North</h4>
-      <div class="r52n"></div>
-
+      <div class="route-header">
+        <span class="route-number">52</span>
+        <h2 class="route-name">Kedzie</h2>
+      </div>
+      <h3>Kedzie & Washington</h3>
       <h4>South</h4>
       <div class="r52s"></div>
+
+      <h4>North</h4>
+      <div class="r52n"></div>
     </div>
 	</div>  
     </main>

@@ -32,13 +32,27 @@ async function syncCtaToDb() {
             const data = await res.json();
             const prds = data['bustime-response']?.prd;
 
-            let resultData = ["No service"];
+            let resultData = ["No Bus :("];
             if (prds) {
                 resultData = prds.map(p => {
-                    let mins = parseInt(p.prdctdn);
-                    let buffered = isNaN(mins) ? p.prdctdn : Math.max(0, mins - 1);
-                    return buffered === 0 ? "DUE" : buffered;
-                }).slice(0, 3); // Grab up to 3 buses
+                let mins = parseInt(p.prdctdn);
+
+                // If API says "DUE" or isn't a number, keep it as "DUE"
+                if (isNaN(mins) || p.prdctdn === "DUE") {
+                    return "DUE";
+                }
+
+                // 1. Convert to seconds
+                let secs = mins * 60;
+                // 2. Subtract 30s safety buffer
+                let bufferedSecs = secs - 30;
+                // 3. Convert back to whole minutes (rounding up so 1.5 mins stays 2 mins)
+                // or use Math.floor if you want to be even more aggressive.
+                let finalMins = Math.ceil(bufferedSecs / 60);
+
+                // If the calculation results in 0 or less, it's "DUE"
+                return finalMins <= 0 ? "DUE" : finalMins;
+            }).slice(0, 3);
             }
 
             // Save as a JSON string so the frontend can parse it back into an array
