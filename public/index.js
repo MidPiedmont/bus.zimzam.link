@@ -1,32 +1,31 @@
-async function refreshAll() {
+// A reusable function to process arrivals for any endpoint
+async function updateUI(endpoint, keys) {
     try {
-        const res = await fetch('/api/bus-data');
+        const res = await fetch(endpoint);
         const dbData = await res.json();
 
-        const stopKeys = ['r20e', 'r20w', 'r49n', 'r49s', 'r52n', 'r52s'];
-
-        stopKeys.forEach(key => {
+        keys.forEach(key => {
             const container = document.querySelector(`.${key}`);
+            // Check if container exists and data is available for this stop
             if (container && dbData[key]) {
-                // Parse the JSON string back into an array
                 const times = JSON.parse(dbData[key]);
-
-                // Clear the container and build new elements
                 container.innerHTML = ''; 
 
                 times.forEach(t => {
                     const span = document.createElement('span');
-                    if (t === "DUE" || +t < 10) {
-                        span.className = 'pill arrival';
-                        if (t == "DUE") {
-                            span.innerText = 'DUE';
-                        } else {
-                            span.innerText = `${t}m`;
-                        }
-                    } else if (+t) {
+                    
+                    // Logic: DUE or less than 10 mins gets the "pill" look
+                    if (t === "DUE" || (+t > 0 && +t < 10)) {
+                        span.className = 'due';
+                        span.innerText = (t === "DUE") ? 'DUE' : `${t}m`;
+                    } 
+                    // Regular arrivals (10 mins or more)
+                    else if (+t) {
                         span.className = 'arrival';
                         span.innerText = `${t}m`; 
-                    } else {
+                    } 
+                    // Handle "DLY" or "No Service"
+                    else {
                         span.className = 'delay';
                         span.innerText = t;
                     } 
@@ -35,12 +34,21 @@ async function refreshAll() {
             }
         });
     } catch (err) {
-        console.error("UI Sync Error:", err);
+        console.error(`UI Sync Error for ${endpoint}:`, err);
     }
+}
+
+// Master function to fire off both requests
+function refreshAll() {
+    const busKeys = ['bus_r20e', 'bus_r20w', 'bus_r49n', 'bus_r49s', 'bus_r52n', 'bus_r52s'];
+    const trainKeys = ['train_rg_east', 'train_rg_west', 'train_rb_east', 'train_rb_west'];
+
+    updateUI('/api/bus', busKeys);
+    updateUI('/api/train', trainKeys);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     refreshAll();
-    // Frontend updates every 10s from our local SQLite cache
+    // Refresh UI every 10 seconds from SQLite cache
     setInterval(refreshAll, 10000); 
 });

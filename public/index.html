@@ -4,46 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bus</title>
+    <title>Transit</title>
     <link rel="stylesheet" href="./global.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
   <body>
     <main>
-        <h1>ZimZam Transit Times</h1>
+      <h1>ZimZam Transit Times</h1>
+      <div class="trains">
+        <div class="line">
+          <div class="line-header">
+            <div class="color green"></div>
+            <h2 class="station">Kedzie</h2>
+          </div>
+          <h3>to 63<sup>rd</sup></h3>
+          <div class="train_rg_east"></div>
+          <h3>to Harlem</h3>
+          <div class="train_rg_west"></div>
+        </div>
+        <div class="line">
+          <div class="line-header">
+            <div class="color blue"></div>
+            <h2 class="station">Kedzie-Homan</h2>
+          </div>
+          <h3>to O'Hare</h3>
+          <div class="train_rb_east"></div>
+          <h3>to Forest Park</h3>
+          <div class="train_rb_west"></div>
+        </div>
+      </div>  
       <div class="busses">
-        <div class = "route">
+        <div class="route">
           <div class="route-header">
             <span class="route-number">20</span>
             <h2 class="route-name">Madison</h2>
           </div>
           <h3>Madison & Albany</h3>
           <h4><strong>East</strong> to Michigan</h4>
-          <div class="r20e"></div>
+          <div class="bus_r20e"></div>
           <h4><strong>West</strong> to Austin</h4>
-          <div class="r20w"></div>
+          <div class="bus_r20w"></div>
         </div>
-        <div class = "route">
+        <div class="route">
           <div class="route-header">
             <span class="route-number">49</span>
             <h2 class="route-name">Western</h2>
           </div>
           <h3>Western & Madison</h3>
           <h4>North</h4>
-          <div class="r49n"></div>
+          <div class="bus_r49n"></div>
           <h4>South</h4>
-          <div class="r49s"></div>
+          <div class="bus_r49s"></div>
         </div>
-        <div class = "route">
+        <div class="route">
           <div class="route-header">
             <span class="route-number">52</span>
             <h2 class="route-name">Kedzie</h2>
           </div>
           <h3>Kedzie & Washington</h3>
           <h4>South</h4>
-          <div class="r52s"></div>
+          <div class="bus_r52s"></div>
           <h4>North</h4>
-          <div class="r52n"></div>
+          <div class="bus_r52n"></div>
         </div>
       </div>  
     </main>

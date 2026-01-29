@@ -8,83 +8,198 @@ html {
     }
 }
 
+.trains {
+    display: grid;
+    /* Fixed width columns ensure all cards have the same width */
+    grid-template-columns: repeat(auto-fill, 320px); 
+    gap: 1.5vi;
+    padding: 0 4vi;
+    /* align-items: stretch ensures cards in the same row share the same height */
+    align-items: stretch; 
+
+    .line {
+        margin: 1vi 0; 
+        padding: 2vi;
+        background: #fff;
+        border-radius: 3px;
+        color: #414145;
+        
+        /* Force a consistent internal layout */
+        display: flex;
+        flex-direction: column;
+        
+        /* If you want a specific height for all cards regardless of row: */
+        min-height: 250px; 
+    }
+
+    .line-header {
+        display: flex;
+        align-items: stretch; /* This fixes your 'floating color' issue */
+        gap: 0;
+        flex-shrink: 0;
+        padding: 0;
+
+        .color {
+            height: 45px;
+            width: 50px;
+            /* No fixed height here; let it stretch to match .station */
+            border-radius: 3px 0 0 3px;
+            flex-shrink: 0;
+            align-self: center;
+            margin: 0;
+            
+            &.green { background-color: #009b3a; }
+            &.blue { background-color: #00a1de; }
+        }
+
+        .station {
+            background-color: #414145;
+            color: #ffffff;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: bold;
+            font-size: 1.4rem;
+            flex-grow: 1; /* Makes the grey bar fill the remaining card width */
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            padding: 0 18px;
+            min-height: 45px;
+            border-radius: 0 3px 3px 0; 
+            white-space: nowrap;
+            margin: 0;
+        }
+    }
+
+    .arrival {
+        background-color: #fff;
+        color: #414145; /* Grey text */
+        font-weight: bold;
+        padding: 4px 12px;
+        border-radius: 3px;
+        border: 1px solid #414145;
+        display: inline-block;
+        margin-right: 5px;}
+
+    .due {
+        background-color: #414145;
+        color: #fff; /* Grey text */
+        font-weight: bold;
+        padding: 4px 12px;
+        border-radius: 3px;
+        border: 1px solid #414145;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    .delay {
+        background-color: #414145;
+        color: #fff; /* Grey text */
+        font-weight: bold;
+        padding: 4px 12px;
+        border-radius: 3px;
+        border: 1px solid #414145;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    .arrival-time {
+        font-size: 1rem;
+        color: #414145;
+        margin-right: 5px;
+    }
+    /* Your existing arrival/due/delay styles remain here... */
+}
+
 .busses {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-    gap: 2vi;
+    /* Fixed width columns ensure all cards have the same width */
+    grid-template-columns: repeat(auto-fill, 320px); 
     padding: 0 4vi;
-    height: fit-content;
-}
-
-.route {
-    margin: 4vi;
-    padding: 2vi;
-    background: #fff;
-    border-radius: 3px;
-    color: #414145;
-    /* width: fit-content; */
-    /* min-width: 20vi; */
-
-}
-
-/* The container for the Route Number + Name */
-.route-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-/* The Grey Box [ 20 ] */
-.route-number {
-    background-color: #414145;
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 1.6rem;
+    /* align-items: stretch ensures cards in the same row share the same height */
+    align-items: stretch; 
     
-    /* Right-align the text inside the box */
-    display: flex;
-    justify-content: flex-end; 
-    align-items: center;
-    
-    padding: 4px 10px;
-    min-width: 60px; /* Ensures all boxes are the same width */
-    height: 35px;
-    border-radius: 3px;
+    .route {
+        margin: 2vi 0; 
+        padding: 2vi;
+        background: #fff;
+        border-radius: 3px;
+        color: #414145;
+        width: fit-content; 
+    }
+
+    /* The container for the Route Number + Name */
+    .route-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    /* The Grey Box [ 20 ] */
+    .route-number {
+        background-color: #414145;
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 1.6rem;
+        
+        /* Right-align the text inside the box */
+        display: flex;
+        justify-content: flex-end; 
+        align-items: center;
+        
+        padding: 4px 10px;
+        min-width: 60px; /* Ensures all boxes are the same width */
+        height: 35px;
+        border-radius: 3px;
+    }
+
+    /* The Route Name (Madison, Western, etc.) */
+    .route-name {
+        color: #414145;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0;
+        padding-right: 10px;
+    }
+
+    .arrival {
+        background-color: #fff;
+        color: #414145; /* Grey text */
+        font-weight: bold;
+        padding: 4px 12px;
+        border-radius: 3px;
+        border: 1px solid #414145;
+        display: inline-block;
+        margin-right: 5px;}
+
+    .due {
+        background-color: #414145;
+        color: #fff; /* Grey text */
+        font-weight: bold;
+        padding: 4px 12px;
+        border-radius: 3px;
+        border: 1px solid #414145;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    .delay {
+        background-color: #414145;
+        color: #fff; /* Grey text */
+        font-weight: bold;
+        padding: 4px 12px;
+        border-radius: 3px;
+        border: 1px solid #414145;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    .arrival-time {
+        font-size: 1rem;
+        color: #414145;
+        margin-right: 5px;
+    }
 }
 
-/* The Route Name (Madison, Western, etc.) */
-.route-name {
-    color: #414145;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin: 0;
-    padding-right: 10px;
-}
-
-.arrival {
-    background-color: #fff;
-    color: #414145; /* Grey text */
-    font-weight: bold;
-    padding: 4px 12px;
-    border-radius: 3px;
-    border: 1px solid #414145;
-    display: inline-block;
-    margin-right: 5px;}
-
-.pill {
-    background-color: #414145;
-    color: #fff; /* Grey text */
-    font-weight: bold;
-    padding: 4px 12px;
-    border-radius: 3px;
-    border: 1px solid #414145;
-    display: inline-block;
-    margin-right: 5px;
-}
-
-.arrival-time {
-    font-size: 1rem;
-    color: #414145;
-    margin-right: 5px;
-}
