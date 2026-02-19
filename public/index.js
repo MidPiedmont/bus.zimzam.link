@@ -38,9 +38,13 @@ async function updateUI(endpoint, keys) {
                     displayTime = `${t}m`;
                 } 
                 // Handle "DLY" or "ERR"
-                else {
+                else if (t == 'DLY') {
                     statusClass = 'delay';
-                    displayTime = t;
+                    displayTime = 'DLY';
+                }
+                else {
+                    statusClass = 'error';
+                    displayTime = 'ERR';
                 }
 
                 span.className = statusClass;
