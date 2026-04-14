@@ -8,7 +8,7 @@
 }
 
 html {
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Segoe UI', Roboto, Ubuntu, Helvetica, Arial, sans-serif;
     background: var(--bg-dark);
     color: white;
     padding: 2rem;
@@ -16,6 +16,8 @@ html {
 
 h1 {
     font-size: clamp(1.8rem, 5vw, 2.5rem);
+    padding-top: 0;
+    margin-top: 0;
     margin-bottom: 2rem;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -75,6 +77,7 @@ h1 {
     background: rgba(255,255,255,0.1);
     padding: 0.75rem 1rem;
     font-weight: 900;
+    font-size: 150%;
     color: white;
     min-width: 50px;
     text-align: center;
@@ -96,15 +99,23 @@ h3, h4 {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    min-height: 40px;
 }
 
-.arrival, .due, .delay {
+.arrival, .due, .delay, .error {
     font-size: 1rem;
     font-weight: 700;
     padding: 6px 14px;
     border-radius: 6px;
     border: 2px solid var(--accent-grey);
+}
+
+.error {
+    border: dashed 1px #c60c30;
+    border-color: #c60c30;
+    background-color: #c60c30;
+    font-style: italic;
+    color: #fff;
+
 }
 
 .arrival {
@@ -118,8 +129,8 @@ h3, h4 {
 }
 
 .delay {
-    border-color: #ff3b30;
-    color: #ff3b30;
+    border-color: #c60c30;
+    color: #c60c30;
 }
 
 .scheduled {
