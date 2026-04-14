@@ -14,13 +14,38 @@ html {
     padding: 2rem;
 }
 
-h1 {
-    font-size: clamp(1.8rem, 5vw, 2.5rem);
-    padding-top: 0;
-    margin-top: 0;
-    margin-bottom: 2rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
+.nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* This centers children vertically */
+    margin-bottom: 2rem; /* Move the spacing from h1 to the parent nav */
+
+    .icon {
+        /* Use a responsive size that scales with text */
+        height: clamp(2rem, 6vh, 3rem); 
+        width: auto; /* Maintain aspect ratio */
+        aspect-ratio: 1 / 1; /* Ensures it stays a perfect circle */
+        
+        margin-right: 15px;
+        background-color: white;
+        border-radius: 50%;
+        
+        /* Ensures the image inside the icon doesn't spill out */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0; /* Prevents the icon from squishing on tiny screens */
+    }
+
+    h1 {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        
+        /* Remove margins entirely so flexbox can handle centering */
+        margin: 0; 
+        line-height: 1.1; /* Tighter line height helps vertical centering look "correct" */
+    }
 }
 
 /* Shared Grid for both Sections */
