@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const Database = require('better-sqlite3');
 const fs = require('fs');
@@ -6,7 +7,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Read and parse the gitignored 'api' file
+// Read and parse the gitignored 'api' key file
 const apiFile = fs.readFileSync(path.join(__dirname, 'api'), 'utf8');
 const keys = Object.fromEntries(
     apiFile.split('\n')
@@ -30,11 +31,8 @@ const stops = [
     { rt: 'Blue',  id: '30049', key: 'train_rb_west', type: 'train' }
 ];
 
-// Initialize SQLite database synchronously
-const db = new Database('./transit_cache.db');
-
-// Enable WAL mode for high-concurrency read/write performance
-db.pragma('journal_mode = WAL');
+// In-memory database (0 B/s disk I/O)
+const db = new Database(':memory:');
 
 // Initialize schema
 db.exec(`
@@ -51,7 +49,7 @@ db.exec(`
     )
 `);
 
-// Prepare reusable SQL statements
+// Prepared statements
 const getArrivalsQuery = db.prepare(`
     SELECT * FROM arrivals 
     WHERE stop_key LIKE ? 
@@ -69,10 +67,18 @@ const purgeStaleQuery = db.prepare(`
     DELETE FROM arrivals WHERE timestamp < datetime('now', '-90 seconds')
 `);
 
+// Execute all queued inserts/upserts in a single RAM transaction
+const batchUpsert = db.transaction((queries) => {
+    for (const { sql, params } of queries) {
+        db.prepare(sql).run(...params);
+    }
+});
+
 app.use(express.static('public'));
 
 async function syncCtaToDb() {
     const timestamp = new Date().toISOString();
+    const queuedUpdates = [];
 
     for (const stop of stops) {
         try {
@@ -126,7 +132,7 @@ async function syncCtaToDb() {
                 params.push(stop.key, stop.id, runNum, finalDisplay, isSch, isExpress, timestamp);
             });
 
-            const upsertSql = `
+            const sql = `
                 INSERT INTO arrivals (
                     stop_key, stop_id, run_number, 
                     arrival, is_scheduled, is_express, timestamp
@@ -139,15 +145,21 @@ async function syncCtaToDb() {
                     timestamp = excluded.timestamp
             `;
 
-            // Execute upsert synchronously
-            db.prepare(upsertSql).run(...params);
+            queuedUpdates.push({ sql, params });
 
         } catch (err) {
             console.error(`Sync Error for ${stop.key}:`, err.message);
         }
     }
 
-    // Clear arrivals that haven't been refreshed in the last 90 seconds
+    if (queuedUpdates.length > 0) {
+        try {
+            batchUpsert(queuedUpdates);
+        } catch (err) {
+            console.error("Batch Upsert Error:", err.message);
+        }
+    }
+
     try {
         purgeStaleQuery.run();
     } catch (err) {
@@ -155,11 +167,11 @@ async function syncCtaToDb() {
     }
 }
 
-// Initial Sync and Loop
+// Initial Sync and Polling Loop (every 30s)
 syncCtaToDb();
 setInterval(syncCtaToDb, 30000);
 
-// API Handlers
+// API Routes
 app.get('/api/bus', (req, res) => {
     try {
         const rows = getArrivalsQuery.all('bus_%');
