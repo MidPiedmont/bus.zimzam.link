@@ -1,7 +1,9 @@
 node_modules
 
-api
+.env
 
 transit_cache.db
 
 package-lock.json
+
+*cache.db*
